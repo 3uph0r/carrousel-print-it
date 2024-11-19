@@ -219,14 +219,15 @@ header {
 /* Code CSS en prévision de l'ajout d'un carousel pour la bannière */
 /* Gestion des fleches du carrousel */
 #banner .arrow {
-    position: absolute;
-    top: 50%; /* Place les flèches au milieu verticalement */
-    transform: translateY(-50%); /* Centre verticalement par rapport à leur propre hauteur */
-    display: flex;
-    align-items: center; /* Centre le contenu à l'intérieur de la flèche */
-    justify-content: center;
-    cursor: pointer;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
 }
+
 #banner .arrow_left {
 	left: 10px;
 }
