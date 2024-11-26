@@ -241,6 +241,7 @@ header {
 	position: absolute;
 	bottom: 40px;
 	display: flex;
+	cursor: pointer;
 }
 
 .dot {
@@ -291,7 +292,6 @@ header {
 	padding-left: 2em;
 	width: 65%;
 	margin-bottom: 1em;
-
 }
 
 #products {
@@ -371,7 +371,6 @@ header {
 	flex: 1;
 }
 
-
 #contact .container {
 	flex-direction: row;
 	display: flex;
@@ -405,7 +404,6 @@ footer {
 }
 
 footer div {
-
 	position: relative;
 }
 
