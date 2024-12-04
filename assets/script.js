@@ -1,3 +1,4 @@
+// Tableau des diapositives (images et textes)
 const slides = [
   {
     image: "slide1.jpg",
@@ -18,33 +19,33 @@ const slides = [
   },
 ];
 
-// Sélection des éléments
-const imageBanniere = document.querySelector(".banner-img");
-const texteBanniere = document.querySelector("#banner p");
-const conteneurPoints = document.querySelector(".dots");
-const flecheGauche = document.querySelector(".arrow_left");
-const flecheDroite = document.querySelector(".arrow_right");
+// Sélection des éléments HTML
+const imageBanniere = document.querySelector(".banner-img"); // Image du carrousel
+const texteBanniere = document.querySelector("#banner p"); // Texte associé à l'image
+const conteneurPoints = document.querySelector(".dots"); // Conteneur pour les points
+const flecheGauche = document.querySelector(".arrow_left"); // Flèche gauche
+const flecheDroite = document.querySelector(".arrow_right"); // Flèche droite
 
-let positionActuelle = 0;
-let intervalleAutoDefilement;
+let positionActuelle = 0; // Position actuelle dans le carrousel
+let intervalleAutoDefilement; // Pour gérer le défilement automatique
 
-// Crée les bullet points dynamiquement
-slides.forEach((_, index) => {
-  const point = document.createElement("div");
-  point.classList.add("dot");
+// Crée les points
+for (let index = 0; index < slides.length; index++) {
+  const point = document.createElement("div"); // Crée un point
+  point.classList.add("dot"); // Ajoute la classe pour le style
   if (index === 0) point.classList.add("dot_selected"); // Le premier point est actif
-  conteneurPoints.appendChild(point);
-});
+  conteneurPoints.appendChild(point); // Ajoute le point dans le conteneur
+}
 
-// Fonction pour mettre à jour le carrousel
+// Met à jour l'image, le texte, et les points actifs
 function mettreAJourCarrousel(position) {
   const points = document.querySelectorAll(".dot");
 
-  // Mise à jour de l'image et du texte
+  // Change l'image et le texte
   imageBanniere.src = `./assets/images/slideshow/${slides[position].image}`;
   texteBanniere.innerHTML = slides[position].tagLine;
 
-  // Mise à jour des bullet points
+  // Met à jour les points
   for (let i = 0; i < points.length; i++) {
     if (i === position) {
       points[i].classList.add("dot_selected");
@@ -54,45 +55,58 @@ function mettreAJourCarrousel(position) {
   }
 }
 
-// Gestion des clics sur les flèches
+// Passe à la diapo précédente
 flecheGauche.addEventListener("click", () => {
-  positionActuelle = (positionActuelle - 1 + slides.length) % slides.length;
+  positionActuelle--; // Diminue la position
+  if (positionActuelle < 0) {
+    positionActuelle = slides.length - 1; // Revient à la dernière diapo si négatif
+  }
   mettreAJourCarrousel(positionActuelle);
   reinitialiserDefilementAuto();
-  alert("flèche gauche");
 });
 
+// Passe à la diapo suivante
 flecheDroite.addEventListener("click", () => {
-  positionActuelle = (positionActuelle + 1) % slides.length;
+  positionActuelle++; // Augmente la position
+  if (positionActuelle >= slides.length) {
+    positionActuelle = 0; // Revient à la première diapo si dépassement
+  }
   mettreAJourCarrousel(positionActuelle);
   reinitialiserDefilementAuto();
-  alert("flèche droite");
 });
 
-// Gestion des clics sur les bullet points
+// Gestion des clics sur les points du carrousel
 conteneurPoints.addEventListener("click", (event) => {
   if (event.target.classList.contains("dot")) {
-    const points = Array.from(document.querySelectorAll(".dot"));
-    positionActuelle = points.indexOf(event.target);
-    mettreAJourCarrousel(positionActuelle);
-    reinitialiserDefilementAuto();
+    const points = document.querySelectorAll(".dot"); // Sélectionne tous les points
+    for (let i = 0; i < points.length; i++) {
+      if (points[i] === event.target) {
+        positionActuelle = i; // Trouve l'index du point cliqué
+        break; // Une fois trouvé, on quitte la boucle
+      }
+    }
+    mettreAJourCarrousel(positionActuelle); // Met à jour le carrousel
+    reinitialiserDefilementAuto(); // Réinitialise le défilement automatique
   }
 });
 
-// Fonction pour lancer le défilement automatique
+// Lance le défilement automatique
 function demarrerDefilementAuto() {
   intervalleAutoDefilement = setInterval(() => {
-    positionActuelle = (positionActuelle + 1) % slides.length;
+    positionActuelle++; // Passe à la diapositive suivante
+    if (positionActuelle >= slides.length) {
+      positionActuelle = 0; // Revient à la première diapositive si dépassement
+    }
     mettreAJourCarrousel(positionActuelle);
-  }, 3000); // Change toutes les 3 secondes
+  }, 3000); // Toutes les 3 secondes
 }
 
-// Fonction pour réinitialiser le défilement automatique
+// Réinitialise le défilement automatique
 function reinitialiserDefilementAuto() {
-  clearInterval(intervalleAutoDefilement);
-  demarrerDefilementAuto();
+  clearInterval(intervalleAutoDefilement); // Arrête le défilement actuel
+  demarrerDefilementAuto(); // Relance le défilement
 }
 
-// Lancement
-mettreAJourCarrousel(positionActuelle);
-demarrerDefilementAuto();
+// Démarrage du carrousel
+mettreAJourCarrousel(positionActuelle); // Affiche la première diapositive
+demarrerDefilementAuto(); // Lance le défilement automatique
